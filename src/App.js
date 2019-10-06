@@ -41,12 +41,12 @@ class App extends React.Component {
 
   render() {
     console.log(this.props);
-    let { eventlist, addEvent } = this.props;
+    let { eventlist } = this.props;
     let { modal } = this.state;
 
     return (
       <div className="App">
-        {modal ? <Modal addEvent={addEvent} handleClose={this.handleCloseModal}/> : ""}
+        {modal ? <Modal handleClose={this.handleCloseModal}/> : ""}
         <header className="header">
           <h1>Мероприятия</h1>
         </header>

@@ -1,4 +1,6 @@
 import React from "react";
+import { connect } from "react-redux";
+import {addEvent} from '../store/actions/events/eventsAction'
 import "./Modal.scss";
 
 class Modal extends React.Component {
@@ -8,38 +10,37 @@ class Modal extends React.Component {
     date: ""
   };
 
-  componentDidMount() {
-  }
+  componentDidMount() {}
 
-  changeName = (e) => {
+  changeName = e => {
     this.setState({
       name: e.target.value
-    })
-  }
+    });
+  };
 
-  changeDate = (e) => {
+  changeDate = e => {
     this.setState({
       date: e.target.value
-    })
-  }
+    });
+  };
 
-  changeCity = (e) => {
+  changeCity = e => {
     this.setState({
       city: e.target.value
-    })
-  }
+    });
+  };
 
   appendEvent = () => {
-    const {name, date} = this.state;
-    const {addEvent } = this.props
+    const { name, date } = this.state;
+    const { addEvent } = this.props;
 
     // if (name === '' && date === '') {
     //   return;
     // }
 
-    addEvent(this.state)
-    this.props.handleClose()
-  }
+    addEvent(this.state);
+    this.props.handleClose();
+  };
 
   render() {
     const { name, city, date } = this.state;
@@ -70,9 +71,7 @@ class Modal extends React.Component {
               className="form-control"
               placeholder="Дата"
             />
-            <select 
-              onChange={this.changeCity}
-              className="form-control">
+            <select onChange={this.changeCity} className="form-control">
               {cityArr.map((v, k) => {
                 if (v === city) {
                   return (
@@ -94,9 +93,9 @@ class Modal extends React.Component {
             <button onClick={handleClose} className="btn btn-transparent">
               Отмена
             </button>
-            <button
-              onClick={this.appendEvent}
-              className="btn btn-transparent">Добавить</button>
+            <button onClick={this.appendEvent} className="btn btn-transparent">
+              Добавить
+            </button>
           </div>
         </div>
       </div>
@@ -104,4 +103,15 @@ class Modal extends React.Component {
   }
 }
 
-export default Modal;
+const mapStateToProps = undefined
+
+const mapDispatchToProps = {
+  addEvent: addEvent
+};
+
+const ModalWitchRedux = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Modal);
+
+export default ModalWitchRedux;
