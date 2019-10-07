@@ -5,7 +5,7 @@ import Modal from "./Modal/Modal";
 
 class App extends React.Component {
   state = {
-    modal: true,
+    modal: false,
     eventlist: []
   };
 
@@ -23,21 +23,31 @@ class App extends React.Component {
       name: "Гражная распродажа",
       date: "30.06.19",
       city: "Киев",
-      checked: false
+      checked: true
     });
   }
 
   handleOpenModal = () => {
     this.setState({
       modal: true
-    })   
-  }
+    });
+  };
 
   handleCloseModal = () => {
     this.setState({
       modal: false
-    })
-  }
+    });
+  };
+
+  handleCheck = e => {
+    const { checkEvent, unCheckEvent } = this.props;
+    console.log("e", e.target.checked);
+    if (e.target.checked) {
+      unCheckEvent(parseInt(e.target.value))
+    } else {
+      checkEvent(parseInt(e.target.value))
+    }
+  };
 
   render() {
     console.log(this.props);
@@ -46,7 +56,7 @@ class App extends React.Component {
 
     return (
       <div className="App">
-        {modal ? <Modal handleClose={this.handleCloseModal}/> : ""}
+        {modal ? <Modal handleClose={this.handleCloseModal} /> : ""}
         <header className="header">
           <h1>Мероприятия</h1>
         </header>
@@ -54,7 +64,12 @@ class App extends React.Component {
           <div className="list__header">
             <div className="list__header-control">
               <button className="btn btn-transparent">-</button>
-              <button onClick={this.handleOpenModal} className="btn btn-transparent">+</button>
+              <button
+                onClick={this.handleOpenModal}
+                className="btn btn-transparent"
+              >
+                +
+              </button>
             </div>
             <div className="list__search">
               <input
@@ -82,7 +97,12 @@ class App extends React.Component {
                   <div key={k} className="list__item">
                     <div className="list__item-checkbox">
                       <label className="checkbox">
-                        <input type="checkbox" />
+                        <input
+                          onChange={this.handleCheck}
+                          value={k}
+                          type="checkbox"
+                          checked={v.checked}
+                        />
                         <div className="cr"></div>
                       </label>
                     </div>

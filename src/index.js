@@ -6,7 +6,7 @@ import * as serviceWorker from "./serviceWorker";
 import createStore from "./store/store";
 import { getEvents } from "./store/reducers/reducers";
 import { Provider, connect } from "react-redux";
-import {addEvent} from "./store/actions/events/eventsAction"
+import {addEvent, checkEvent, unCheckEvent} from "./store/actions/events/eventsAction"
 
 const store = createStore();
 
@@ -15,7 +15,9 @@ const mapStateToProps = store => ({
 });
 
 const mapDispatchToProps = {
-  addEvent: addEvent
+  addEvent: addEvent,
+  checkEvent: checkEvent,
+  unCheckEvent: unCheckEvent,
 };
 
 let AppWithRedux = connect(
