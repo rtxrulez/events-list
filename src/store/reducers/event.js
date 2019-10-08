@@ -10,16 +10,14 @@ export const eventlist = (state = [], action) => {
     case ADD_EVENT:
       return [...state, action.payload];
     case CHECK_EVENT:
-      return state[action.payload] = {
-        ...state[action.payload],
-        checked: true
-      };
+      const stateCheck = [...state];
+      stateCheck[action.payload].checked = true;
+      return stateCheck;
 
     case UNCHECK_EVENT:
-      return state[action.payload] = {
-        ...state[action.payload],
-        checked: false
-      };
+      const stateCheckFalse = [...state];
+      stateCheckFalse[action.payload].checked = false;
+      return stateCheckFalse;
 
     default:
       return state;

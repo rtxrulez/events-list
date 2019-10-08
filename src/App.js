@@ -41,8 +41,8 @@ class App extends React.Component {
 
   handleCheck = e => {
     const { checkEvent, unCheckEvent } = this.props;
-    console.log("e", e.target.checked);
-    if (e.target.checked) {
+    
+    if (!e.target.checked) {
       unCheckEvent(parseInt(e.target.value))
     } else {
       checkEvent(parseInt(e.target.value))
