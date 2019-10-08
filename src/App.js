@@ -2,10 +2,12 @@ import React from "react";
 import "./App.scss";
 
 import Modal from "./Modal/Modal";
+import ModalDelete from "./ModalDelete/ModalDelete";
 
 class App extends React.Component {
   state = {
     modal: false,
+    modalDelete: false,
     eventlist: [],
     checkAll: false
   };
@@ -40,6 +42,14 @@ class App extends React.Component {
     });
   };
 
+  handleCloseModalDelete = () => {
+    console.log("close delete");
+    this.props.unCheckEventAll();
+    this.setState({
+      modalDelete: false
+    });
+  };
+
   handleCheck = e => {
     const { checkEvent, unCheckEvent } = this.props;
 
@@ -51,42 +61,56 @@ class App extends React.Component {
   };
 
   handleCheckAll = e => {
-    const { checkEvent, unCheckEvent, eventlist } = this.props;
+    const {
+      checkEvent,
+      unCheckEvent,
+      eventlist,
+      checkEventAll,
+      unCheckEventAll
+    } = this.props;
 
     if (e.target.checked) {
       eventlist.map((v, k) => {
         checkEvent(parseInt(k));
       });
-
-      this.setState({
-        checkAll: true
-      })
+      checkEventAll();
     } else {
       eventlist.map((v, k) => {
         unCheckEvent(parseInt(k));
       });
-
-      this.setState({
-        checkAll: false
-      })
+      unCheckEventAll();
     }
   };
 
+  handleDelete = () => {
+    this.setState({
+      modalDelete: true
+    });
+  };
+
   render() {
-    console.log(this.props);
-    let { eventlist } = this.props;
-    let { modal } = this.state;
+    console.log("checkEventAll", this.props.settings);
+    let { eventlist, settings } = this.props;
+    let { modal, modalDelete } = this.state;
 
     return (
       <div className="App">
-        {modal ? <Modal handleClose={this.handleCloseModal} /> : ""}
+        {modal && <Modal handleClose={this.handleCloseModal} />}
+        {modalDelete && (
+          <ModalDelete handleClose={this.handleCloseModalDelete} />
+        )}
         <header className="header">
           <h1>Мероприятия</h1>
         </header>
         <section className="list">
           <div className="list__header">
             <div className="list__header-control">
-              <button className="btn btn-transparent">-</button>
+              <button
+                onClick={this.handleDelete}
+                className="btn btn-transparent"
+              >
+                -
+              </button>
               <button
                 onClick={this.handleOpenModal}
                 className="btn btn-transparent"
@@ -106,10 +130,11 @@ class App extends React.Component {
             <div className="list__item list__item--head">
               <div className="list__item-checkbox">
                 <label className="checkbox">
-                  <input 
+                  <input
                     onChange={this.handleCheckAll}
-                    checked={this.state.checkAll}
-                    type="checkbox" />
+                    checked={settings.checkEventAll}
+                    type="checkbox"
+                  />
                   <div className="cr"></div>
                 </label>
               </div>

@@ -4,20 +4,25 @@ import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import createStore from "./store/store";
-import { getEvents } from "./store/reducers/reducers";
+import { getEvents, getSettings } from "./store/reducers/reducers";
 import { Provider, connect } from "react-redux";
 import {addEvent, checkEvent, unCheckEvent} from "./store/actions/events/eventsAction"
+import {unCheckEventAll, checkEventAll} from './store/actions/settings/eventsAction'
+
 
 const store = createStore();
 
 const mapStateToProps = store => ({
-  eventlist: getEvents(store)
+  eventlist: getEvents(store),
+  settings: getSettings(store)
 });
 
 const mapDispatchToProps = {
   addEvent: addEvent,
   checkEvent: checkEvent,
   unCheckEvent: unCheckEvent,
+  checkEventAll: checkEventAll,
+  unCheckEventAll: unCheckEventAll,
 };
 
 let AppWithRedux = connect(

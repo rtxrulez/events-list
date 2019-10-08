@@ -1,14 +1,17 @@
 import { combineReducers } from "redux";
-import { eventlist } from './event'
-
-
-
+import { eventlist } from "./event";
+import { settings } from "./settings";
 
 export default combineReducers({
-  eventlist
-})
+  eventlist,
+  settings
+});
 
 // selectors
 export const getEvents = state => {
-  return state.eventlist
-}
+  return state.eventlist;
+};
+
+export const getSettings = state => {
+  return state.settings;
+};

@@ -1,10 +1,6 @@
 import { createStore, compose } from "redux";
 import rootReducer from './reducers/reducers'
 
-const defaultStore = {
-  eventlist: []
-}
-
 export default (initialStore) =>
   createStore(
     rootReducer,

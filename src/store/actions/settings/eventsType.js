@@ -1,0 +1,2 @@
+export const CHECK_EVENT_ALL = "CHECK_EVENT_ALL";
+export const UNCHECK_EVENT_ALL = "UNCHECK_EVENT_ALL";
