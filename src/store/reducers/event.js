@@ -5,21 +5,17 @@ import {
 } from "../actions/events/eventsType";
 
 export const eventlist = (state = [], action) => {
-  console.log("state", state);
+  let newState = Object.extend(state, {});
   switch (action.type) {
     case ADD_EVENT:
-      return [...state, action.payload];
+      break;
     case CHECK_EVENT:
-      const stateCheck = [...state];
-      stateCheck[action.payload].checked = true;
-      return stateCheck;
-
+      newState[action.payload].checked = true;
+      break;
     case UNCHECK_EVENT:
-      const stateCheckFalse = [...state];
-      stateCheckFalse[action.payload].checked = false;
-      return stateCheckFalse;
-
-    default:
-      return state;
+      newState[action.payload].checked = false;
+      break;
   }
+  
+  return newState;
 };
