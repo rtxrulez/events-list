@@ -6,7 +6,8 @@ import Modal from "./Modal/Modal";
 class App extends React.Component {
   state = {
     modal: false,
-    eventlist: []
+    eventlist: [],
+    checkAll: false
   };
 
   componentDidMount() {
@@ -41,11 +42,33 @@ class App extends React.Component {
 
   handleCheck = e => {
     const { checkEvent, unCheckEvent } = this.props;
-    
+
     if (!e.target.checked) {
-      unCheckEvent(parseInt(e.target.value))
+      unCheckEvent(parseInt(e.target.value));
     } else {
-      checkEvent(parseInt(e.target.value))
+      checkEvent(parseInt(e.target.value));
+    }
+  };
+
+  handleCheckAll = e => {
+    const { checkEvent, unCheckEvent, eventlist } = this.props;
+
+    if (e.target.checked) {
+      eventlist.map((v, k) => {
+        checkEvent(parseInt(k));
+      });
+
+      this.setState({
+        checkAll: true
+      })
+    } else {
+      eventlist.map((v, k) => {
+        unCheckEvent(parseInt(k));
+      });
+
+      this.setState({
+        checkAll: false
+      })
     }
   };
 
@@ -83,7 +106,10 @@ class App extends React.Component {
             <div className="list__item list__item--head">
               <div className="list__item-checkbox">
                 <label className="checkbox">
-                  <input type="checkbox" />
+                  <input 
+                    onChange={this.handleCheckAll}
+                    checked={this.state.checkAll}
+                    type="checkbox" />
                   <div className="cr"></div>
                 </label>
               </div>
