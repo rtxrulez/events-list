@@ -26,7 +26,21 @@ class App extends React.Component {
       name: "Гражная распродажа",
       date: "30.06.19",
       city: "Киев",
-      checked: true
+      checked: false
+    });
+
+    addEvent({
+      name: "Гражная распродажа",
+      date: "30.06.19",
+      city: "Киев",
+      checked: false
+    });
+
+    addEvent({
+      name: "Гражная распродажа",
+      date: "30.06.19",
+      city: "Киев",
+      checked: false
     });
   }
 
@@ -88,9 +102,15 @@ class App extends React.Component {
     });
   };
 
+  handleSearch = e => {
+    const { searchQuery } = this.props;
+    searchQuery(e.target.value);
+  };
+
   render() {
     console.log("checkEventAll", this.props.settings);
     let { eventlist, settings } = this.props;
+    let { searchQuery } = settings;
     let { modal, modalDelete } = this.state;
 
     return (
@@ -120,6 +140,8 @@ class App extends React.Component {
             </div>
             <div className="list__search">
               <input
+                value={searchQuery}
+                onChange={this.handleSearch}
                 type="text"
                 className="form-control list__search-input"
                 placeholder="Поиск"
@@ -144,24 +166,28 @@ class App extends React.Component {
             </div>
             <div className="list__scroll">
               {eventlist.map((v, k) => {
-                return (
-                  <div key={k} className="list__item">
-                    <div className="list__item-checkbox">
-                      <label className="checkbox">
-                        <input
-                          onChange={this.handleCheck}
-                          value={k}
-                          type="checkbox"
-                          checked={v.checked}
-                        />
-                        <div className="cr"></div>
-                      </label>
+                if (
+                  v.name.toLowerCase().indexOf(searchQuery.toLowerCase()) !== -1
+                ) {
+                  return (
+                    <div key={k} className="list__item">
+                      <div className="list__item-checkbox">
+                        <label className="checkbox">
+                          <input
+                            onChange={this.handleCheck}
+                            value={k}
+                            type="checkbox"
+                            checked={v.checked}
+                          />
+                          <div className="cr"></div>
+                        </label>
+                      </div>
+                      <div className="list__item-name">{v.name}</div>
+                      <div className="list__item-date">{v.date}</div>
+                      <div className="list__item-location">{v.city}</div>
                     </div>
-                    <div className="list__item-name">{v.name}</div>
-                    <div className="list__item-date">{v.date}</div>
-                    <div className="list__item-location">{v.city}</div>
-                  </div>
-                );
+                  );
+                }
               })}
             </div>
           </div>

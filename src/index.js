@@ -7,7 +7,7 @@ import createStore from "./store/store";
 import { getEvents, getSettings } from "./store/reducers/reducers";
 import { Provider, connect } from "react-redux";
 import {addEvent, checkEvent, unCheckEvent} from "./store/actions/events/eventsAction"
-import {unCheckEventAll, checkEventAll} from './store/actions/settings/eventsAction'
+import {unCheckEventAll, checkEventAll, searchQuery} from './store/actions/settings/settingsAction'
 
 
 const store = createStore();
@@ -23,6 +23,7 @@ const mapDispatchToProps = {
   unCheckEvent: unCheckEvent,
   checkEventAll: checkEventAll,
   unCheckEventAll: unCheckEventAll,
+  searchQuery: searchQuery
 };
 
 let AppWithRedux = connect(
