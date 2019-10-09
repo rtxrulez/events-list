@@ -1,19 +1,20 @@
 import React from "react";
 import "./App.scss";
+import {connect} from "react-redux"
+import { getEvents, getSettings } from "./store/reducers/reducers";
+import {addEvent, checkEvent, unCheckEvent} from "./store/actions/events/eventsAction"
+import {unCheckEventAll, checkEventAll, searchQuery} from './store/actions/settings/settingsAction'
+
 
 import Modal from "./Modal/Modal";
 import ModalDelete from "./ModalDelete/ModalDelete";
 
 class App extends React.Component {
   state = {
-    modal: false,
-    modalDelete: false,
-    eventlist: [],
-    checkAll: false
   };
 
   componentDidMount() {
-    const { addEvent, eventslist } = this.props;
+    const { addEvent} = this.props;
 
     addEvent({
       name: "Стрижка сусликов",
@@ -86,11 +87,13 @@ class App extends React.Component {
     if (e.target.checked) {
       eventlist.map((v, k) => {
         checkEvent(parseInt(k));
+        return false
       });
       checkEventAll();
     } else {
       eventlist.map((v, k) => {
         unCheckEvent(parseInt(k));
+        return false
       });
       unCheckEventAll();
     }
@@ -188,6 +191,7 @@ class App extends React.Component {
                     </div>
                   );
                 }
+                return false
               })}
             </div>
           </div>
@@ -197,4 +201,23 @@ class App extends React.Component {
   }
 }
 
-export default App;
+const mapStateToProps = store => ({
+  eventlist: getEvents(store),
+  settings: getSettings(store)
+});
+
+const mapDispatchToProps = {
+  addEvent: addEvent,
+  checkEvent: checkEvent,
+  unCheckEvent: unCheckEvent,
+  checkEventAll: checkEventAll,
+  unCheckEventAll: unCheckEventAll,
+  searchQuery: searchQuery
+};
+
+let AppWithRedux = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);
+
+export default AppWithRedux;

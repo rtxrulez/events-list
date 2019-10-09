@@ -15,7 +15,9 @@ class ModalDelete extends React.Component {
       if (v.checked === false) {
         return true;
       }
+      return false
     });
+
     replaceEvents(newEventList);
 
     this.props.handleClose();

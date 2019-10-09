@@ -31,12 +31,7 @@ class Modal extends React.Component {
   };
 
   appendEvent = () => {
-    const { name, date } = this.state;
     const { addEvent } = this.props;
-
-    // if (name === '' && date === '') {
-    //   return;
-    // }
 
     addEvent(this.state);
     this.props.handleClose();
