@@ -27,36 +27,8 @@ class App extends React.Component {
   componentDidMount() {
     const { addEvent, fetchEventsRequest } = this.props;
 
-    addEvent({
-      name: "Стрижка сусликов",
-      date: "20.06.19",
-      city: "Саратов",
-      checked: false
-    });
-
-    addEvent({
-      name: "Гражная распродажа",
-      date: "30.06.19",
-      city: "Киев",
-      checked: false
-    });
-
-    addEvent({
-      name: "Гражная распродажа",
-      date: "30.06.19",
-      city: "Киев",
-      checked: false
-    });
-
-    addEvent({
-      name: "Гражная распродажа",
-      date: "30.06.19",
-      city: "Киев",
-      checked: false
-    });
-
-    console.log("props", this.props);
-    fetchEventsRequest()
+    // console.log("props", this.props);
+    fetchEventsRequest();
   }
 
   handleOpenModal = () => {
@@ -125,16 +97,81 @@ class App extends React.Component {
   };
 
   render() {
-    console.log("checkEventAll", this.props.settings);
     let { eventlist, settings } = this.props;
     let { isFetching, isFetched } = this.props.fetchData;
     let { searchQuery } = settings;
     let { modal, modalDelete } = this.state;
 
-    console.log('is', isFetching)
-    if(isFetching) {
-      return (<div>Загрузка...</div>)
-    }
+    let list = (
+      <section className="list">
+        <div className="list__header">
+          <div className="list__header-control">
+            <button onClick={this.handleDelete} className="btn btn-transparent">
+              -
+            </button>
+            <button
+              onClick={this.handleOpenModal}
+              className="btn btn-transparent"
+            >
+              +
+            </button>
+          </div>
+          <div className="list__search">
+            <input
+              value={searchQuery}
+              onChange={this.handleSearch}
+              type="text"
+              className="form-control list__search-input"
+              placeholder="Поиск"
+            />
+          </div>
+        </div>
+        <div className="list__content">
+          <div className="list__item list__item--head">
+            <div className="list__item-checkbox">
+              <label className="checkbox">
+                <input
+                  onChange={this.handleCheckAll}
+                  checked={settings.checkEventAll}
+                  type="checkbox"
+                />
+                <div className="cr"></div>
+              </label>
+            </div>
+            <div className="list__item-name">Название</div>
+            <div className="list__item-date">Дата</div>
+            <div className="list__item-location">Место проведения</div>
+          </div>
+          <div className="list__scroll">
+            {eventlist.map((v, k) => {
+              if (
+                v.name.toLowerCase().indexOf(searchQuery.toLowerCase()) !== -1
+              ) {
+                return (
+                  <div key={k} className="list__item">
+                    <div className="list__item-checkbox">
+                      <label className="checkbox">
+                        <input
+                          onChange={this.handleCheck}
+                          value={k}
+                          type="checkbox"
+                          checked={v.checked}
+                        />
+                        <div className="cr"></div>
+                      </label>
+                    </div>
+                    <div className="list__item-name">{v.name}</div>
+                    <div className="list__item-date">{v.date}</div>
+                    <div className="list__item-location">{v.city}</div>
+                  </div>
+                );
+              }
+              return false;
+            })}
+          </div>
+        </div>
+      </section>
+    );
 
     return (
       <div className="App">
@@ -145,77 +182,7 @@ class App extends React.Component {
         <header className="header">
           <h1>Мероприятия</h1>
         </header>
-        <section className="list">
-          <div className="list__header">
-            <div className="list__header-control">
-              <button
-                onClick={this.handleDelete}
-                className="btn btn-transparent"
-              >
-                -
-              </button>
-              <button
-                onClick={this.handleOpenModal}
-                className="btn btn-transparent"
-              >
-                +
-              </button>
-            </div>
-            <div className="list__search">
-              <input
-                value={searchQuery}
-                onChange={this.handleSearch}
-                type="text"
-                className="form-control list__search-input"
-                placeholder="Поиск"
-              />
-            </div>
-          </div>
-          <div className="list__content">
-            <div className="list__item list__item--head">
-              <div className="list__item-checkbox">
-                <label className="checkbox">
-                  <input
-                    onChange={this.handleCheckAll}
-                    checked={settings.checkEventAll}
-                    type="checkbox"
-                  />
-                  <div className="cr"></div>
-                </label>
-              </div>
-              <div className="list__item-name">Название</div>
-              <div className="list__item-date">Дата</div>
-              <div className="list__item-location">Место проведения</div>
-            </div>
-            <div className="list__scroll">
-              {eventlist.map((v, k) => {
-                if (
-                  v.name.toLowerCase().indexOf(searchQuery.toLowerCase()) !== -1
-                ) {
-                  return (
-                    <div key={k} className="list__item">
-                      <div className="list__item-checkbox">
-                        <label className="checkbox">
-                          <input
-                            onChange={this.handleCheck}
-                            value={k}
-                            type="checkbox"
-                            checked={v.checked}
-                          />
-                          <div className="cr"></div>
-                        </label>
-                      </div>
-                      <div className="list__item-name">{v.name}</div>
-                      <div className="list__item-date">{v.date}</div>
-                      <div className="list__item-location">{v.city}</div>
-                    </div>
-                  );
-                }
-                return false;
-              })}
-            </div>
-          </div>
-        </section>
+        {isFetching ? <div className="loading">Загрузка...</div> : list}
       </div>
     );
   }
@@ -234,7 +201,7 @@ const mapDispatchToProps = {
   checkEventAll: checkEventAll,
   unCheckEventAll: unCheckEventAll,
   searchQuery: searchQuery,
-  fetchEventsRequest: fetchEventsRequest,
+  fetchEventsRequest: fetchEventsRequest
 };
 
 let AppWithRedux = connect(
