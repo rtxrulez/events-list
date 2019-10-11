@@ -43,6 +43,8 @@ class App extends React.Component {
       city: "Киев",
       checked: false
     });
+
+    console.log('props', this.props)
   }
 
   handleOpenModal = () => {

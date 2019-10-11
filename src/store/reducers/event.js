@@ -2,7 +2,10 @@ import {
   ADD_EVENT,
   CHECK_EVENT,
   UNCHECK_EVENT,
-  REPLACE_EVENTS
+  REPLACE_EVENTS,
+  FETCH_EVENTS_REQUEST,
+  FETCH_EVENTS_SUCCESS,
+  FETCH_EVENTS_FAILURE
 } from "../actions/events/eventsType";
 
 const initialState = {
@@ -14,6 +17,7 @@ const initialState = {
 
 export const eventlist = (state = initialState, action) => {
   console.log("ss", state);
+  
   let newState = [...state.eventList];
 
   switch (action.type) {
@@ -33,7 +37,7 @@ export const eventlist = (state = initialState, action) => {
       newState[action.payload].checked = true;
       return {
         ...state,
-        eventList: [...action.payload]
+        eventList: [...newState]
       };
     }
 
@@ -41,7 +45,33 @@ export const eventlist = (state = initialState, action) => {
       newState[action.payload].checked = false;
       return {
         ...state,
-        eventList: [...action.payload]
+        eventList: [...newState]
+      };
+    }
+
+    case FETCH_EVENTS_REQUEST: {
+      return {
+        ...state,
+        isFetching: true,
+        isFetched: false
+      };
+    }
+
+    case FETCH_EVENTS_SUCCESS: {
+      return {
+        ...state,
+        eventList: action.payload,
+        isFetching: false,
+        isFetched: true
+      };
+    }
+
+    case FETCH_EVENTS_FAILURE: {
+      return {
+        ...state,
+        isFetching: false,
+        isFetched: true,
+        error: action.error
       };
     }
 
