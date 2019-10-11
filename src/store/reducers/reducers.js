@@ -15,3 +15,9 @@ export const getEvents = state => {
 export const getSettings = state => {
   return state.settings;
 };
+
+export const getFetchData = state => {
+  return {
+    ...state.eventlist
+  }
+}

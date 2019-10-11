@@ -1,20 +1,31 @@
 import React from "react";
 import "./App.scss";
-import {connect} from "react-redux"
-import { getEvents, getSettings } from "./store/reducers/reducers";
-import {addEvent, checkEvent, unCheckEvent} from "./store/actions/events/eventsAction"
-import {unCheckEventAll, checkEventAll, searchQuery} from './store/actions/settings/settingsAction'
-
+import { connect } from "react-redux";
+import {
+  getEvents,
+  getSettings,
+  getFetchData
+} from "./store/reducers/reducers";
+import {
+  addEvent,
+  checkEvent,
+  unCheckEvent,
+  fetchEventsRequest
+} from "./store/actions/events/eventsAction";
+import {
+  unCheckEventAll,
+  checkEventAll,
+  searchQuery
+} from "./store/actions/settings/settingsAction";
 
 import Modal from "./Modal/Modal";
 import ModalDelete from "./ModalDelete/ModalDelete";
 
 class App extends React.Component {
-  state = {
-  };
+  state = {};
 
   componentDidMount() {
-    const { addEvent} = this.props;
+    const { addEvent, fetchEventsRequest } = this.props;
 
     addEvent({
       name: "Стрижка сусликов",
@@ -44,7 +55,8 @@ class App extends React.Component {
       checked: false
     });
 
-    console.log('props', this.props)
+    console.log("props", this.props);
+    fetchEventsRequest()
   }
 
   handleOpenModal = () => {
@@ -89,13 +101,13 @@ class App extends React.Component {
     if (e.target.checked) {
       eventlist.map((v, k) => {
         checkEvent(parseInt(k));
-        return false
+        return false;
       });
       checkEventAll();
     } else {
       eventlist.map((v, k) => {
         unCheckEvent(parseInt(k));
-        return false
+        return false;
       });
       unCheckEventAll();
     }
@@ -115,8 +127,14 @@ class App extends React.Component {
   render() {
     console.log("checkEventAll", this.props.settings);
     let { eventlist, settings } = this.props;
+    let { isFetching, isFetched } = this.props.fetchData;
     let { searchQuery } = settings;
     let { modal, modalDelete } = this.state;
+
+    console.log('is', isFetching)
+    if(isFetching) {
+      return (<div>Загрузка...</div>)
+    }
 
     return (
       <div className="App">
@@ -193,7 +211,7 @@ class App extends React.Component {
                     </div>
                   );
                 }
-                return false
+                return false;
               })}
             </div>
           </div>
@@ -205,7 +223,8 @@ class App extends React.Component {
 
 const mapStateToProps = store => ({
   eventlist: getEvents(store),
-  settings: getSettings(store)
+  settings: getSettings(store),
+  fetchData: getFetchData(store)
 });
 
 const mapDispatchToProps = {
@@ -214,7 +233,8 @@ const mapDispatchToProps = {
   unCheckEvent: unCheckEvent,
   checkEventAll: checkEventAll,
   unCheckEventAll: unCheckEventAll,
-  searchQuery: searchQuery
+  searchQuery: searchQuery,
+  fetchEventsRequest: fetchEventsRequest,
 };
 
 let AppWithRedux = connect(
