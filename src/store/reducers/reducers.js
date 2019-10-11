@@ -9,7 +9,7 @@ export default combineReducers({
 
 // selectors
 export const getEvents = state => {
-  return state.eventlist;
+  return state.eventlist.eventList;
 };
 
 export const getSettings = state => {

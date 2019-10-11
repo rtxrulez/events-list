@@ -5,27 +5,50 @@ import {
   REPLACE_EVENTS
 } from "../actions/events/eventsType";
 
-export const eventlist = (state = [], action) => {
-  let newState = [...state];
-  
+const initialState = {
+  eventList: [],
+  isFetching: false,
+  isFetched: false,
+  error: null
+};
+
+export const eventlist = (state = initialState, action) => {
+  console.log("ss", state);
+  let newState = [...state.eventList];
+
   switch (action.type) {
     case ADD_EVENT:
-      return [...newState, action.payload];
+      return {
+        ...state,
+        eventList: [...newState, action.payload]
+      };
 
     case REPLACE_EVENTS:
-      return [...action.payload];
+      return {
+        ...state,
+        eventList: [...action.payload]
+      };
 
     case CHECK_EVENT: {
       newState[action.payload].checked = true;
-      return newState;
+      return {
+        ...state,
+        eventList: [...action.payload]
+      };
     }
 
     case UNCHECK_EVENT: {
       newState[action.payload].checked = false;
-      return newState;
+      return {
+        ...state,
+        eventList: [...action.payload]
+      };
     }
 
     default:
-      return newState;
+      return {
+        ...state,
+        eventList: newState
+      };
   }
 };

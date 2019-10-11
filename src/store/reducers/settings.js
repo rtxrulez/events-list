@@ -6,7 +6,7 @@ import {
 
 const initialDefault = {
   checkEventAll: false,
-  searchQuery: ""
+  searchQuery: "",
 };
 
 export const settings = (state = initialDefault, action) => {
